@@ -71,10 +71,11 @@ class StudentDeleteAPIView(
 student_delete_view = StudentDeleteAPIView.as_view()
 
     # =========== #
+from rest_framework.permissions import AllowAny
 
 # View StudentClassRoom view    
 class StudentClassRoomDetailAPIView(
-    StaffEditorPermissionMixin,
+    AllowAny,
     generics.RetrieveAPIView
     ):
     queryset = StudentClassRoom.objects.all()
@@ -85,7 +86,7 @@ student_classroom_detail_view = StudentClassRoomDetailAPIView.as_view()
 
 # List StudentClassRoom view    
 class StudentClassRoomListCreateAPIView(
-    StaffEditorPermissionMixin,
+    AllowAny,
     generics.ListCreateAPIView
     ):
     queryset = StudentClassRoom.objects.all()

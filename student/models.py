@@ -10,7 +10,7 @@ class Student(models.Model):
     branch = models.ForeignKey('department.Branch', on_delete=models.CASCADE, blank=True, null=True) 
 
 class StudentClassRoom(models.Model):
-    uid = models.CharField(max_length=100, primary_key=True)
+    uid = models.CharField(max_length=200, primary_key=True)
     student = models.ForeignKey('Student', on_delete=models.CASCADE)    
     class_room = models.ForeignKey('department.ClassRoom', on_delete=models.CASCADE)
 
