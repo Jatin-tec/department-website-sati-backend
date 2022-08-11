@@ -1,5 +1,7 @@
 from dataclasses import field
 from pyexpat import model
+from re import S
+from statistics import mode
 from rest_framework import serializers 
 from department.models import Course, Department, Branch, Subject, ClassRoom, Subjective_Questions, MCQ_Question, Assingment, Quiz, SubjectiveQuestionsQuiz, MCQ_QuestionsQuiz
 from rest_framework.reverse import reverse
@@ -61,19 +63,60 @@ class SubjectSerializer(serializers.ModelSerializer):
             # 'branch_id',          
         ]
 
+from student.serializers import StudentSerializer    
+from student.models import Student
+from department.models import CustomUser
+
 class ClassRoomSerializer(serializers.ModelSerializer):
+    # students = StudentSerializer(many=True, read_only=False)
     class Meta:
         model = ClassRoom
         fields = [
-            # 'url',
-            # 'edit_url',
+            'classroom_code',
+            'class_name',
+            'faculty_email', 
+            'faculty_id',
+            'subject',        
+            'branch',
+            'section',
+            'students'
+        ]
+
+    def create(self, validated_data):
+        students = validated_data.pop('students')
+        classroom = ClassRoom.objects.create(**validated_data)
+        return classroom
+
+    def update(self, instance, validated_data):
+        students = validated_data.pop('students')
+        instance = super(ClassRoomSerializer, self).update(instance, validated_data)
+    
+        students_qs = Student.objects.all()
+        print(validated_data, 'this this this')
+        existing_students = [s for s in instance.students.all()]
+
+        print(students)
+
+        if Student.objects.filter(user=students[0]).exists():
+            existing_students.append(Student.objects.get(user=students[0]))
+            instance.students.set(existing_students)
+
+        return instance
+
+class GetClassRoomSerializer(serializers.ModelSerializer):
+    students = StudentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = ClassRoom
+        fields = [
             'classroom_code',
             'faculty_id',
             'subject',        
             'class_name',
             'branch',
             'section',
-            'faculty_email',      
+            'faculty_email', 
+            'students'    
         ]
 
 class SubjectiveQuestionsSerializer(serializers.ModelSerializer):
@@ -177,7 +220,6 @@ class MCQ_QuestionsQuizSerializer(serializers.ModelSerializer):
             'question_id'
         ]
 
-from .models import CustomUser
 class RegisterUserSerializer(serializers.ModelSerializer):
     
     email = serializers.EmailField(required=True)

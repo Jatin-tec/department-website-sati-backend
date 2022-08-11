@@ -224,6 +224,38 @@ class SubjectDetailAPIView(
 subject_detail_view = SubjectDetailAPIView.as_view()
 
 # ============= #
+class ClassRoomListAPIView(
+    AllowAny,
+    generics.ListCreateAPIView
+    ):
+    serializer_class = GetClassRoomSerializer
+    queryset = ClassRoom.objects.all()
+
+    def get_queryset(self):
+        queryset = ClassRoom.objects.all()
+        useremail =  self.kwargs['useremail']
+        
+        if useremail is not None:
+            queryset = queryset.filter(faculty_email=useremail)
+
+        return queryset
+
+classRoom_list_view = ClassRoomListAPIView.as_view()
+
+# Add student API view
+class AddStudentUpdateView(
+    AllowAny,
+    generics.UpdateAPIView
+    ):
+    queryset = ClassRoom.objects.all()
+    serializer_class = ClassRoomSerializer
+    lookup_field = 'classroom_code'
+
+    # def patch(self, request, *args, **kwargs):
+    #     return self.partial_update(request, *args, **kwargs)
+
+
+classRoom_add_student_list_create_view = AddStudentUpdateView.as_view()
 
 # List ClassRoom view
 class ClassRoomListCreateAPIView(
@@ -236,7 +268,7 @@ class ClassRoomListCreateAPIView(
     def get_queryset(self):
         queryset = ClassRoom.objects.all()
         useremail =  self.kwargs['useremail']
-        print(useremail)
+        
         if useremail is not None:
             queryset = queryset.filter(faculty_email=useremail)
 

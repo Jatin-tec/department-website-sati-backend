@@ -1,13 +1,5 @@
-from asyncio.windows_events import NULL
-from datetime import datetime
-from venv import create
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from distutils.command.upload import upload
-from email.mime import image
-from tkinter.messagebox import QUESTION
-from unittest import mock
 from django.db import models
-from pkg_resources import require
 from faculty.models import *
 from django.utils import timezone 
 
@@ -140,10 +132,12 @@ class ClassRoom(models.Model):
     branch = models.ForeignKey('Branch', models.CASCADE)
     faculty_email = models.EmailField(null=False)
     section = models.CharField(max_length=500 , null=True, blank=True)
-    created_at = models.DateField(auto_now_add=True, verbose_name=u"Date added") 
+    created_at = models.DateField(auto_now_add=True, verbose_name=u"Date added")
+    students = models.ManyToManyField(to=Student, blank=True) 
     
     def __str__(self):
         return self.classroom_code
+
 
     class Meta:
         verbose_name_plural = "Class Room"

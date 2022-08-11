@@ -7,21 +7,6 @@ from faculty.serializers import *
 from department_website_sati.authentication import TokenAuthentication
 from department_website_sati.mixins import StaffEditorPermissionMixin
 
-# ---------------
-# class StudentCreateAPIView(generics.CreateAPIView):
-#     queryset = Student.objects.all()
-#     serializer_class = StudentSerializer
-
-#     def perform_create(self, serializer):
-#         print(serializer)
-
-# student_create_view = StudentCreateAPIView.as_view()
-# ----------------
-# class StudentListAPIView(generics.ListAPIView):
-#     queryset = Student.objects.all()
-#     serializer_class = StudentSerializer
-# student_list_view = StudentListAPIView.as_view()
-    
 class StudentDetailAPIView(
     StaffEditorPermissionMixin,
     generics.RetrieveAPIView
@@ -69,58 +54,3 @@ class StudentDeleteAPIView(
         super().perform_destroy(instance)
 
 student_delete_view = StudentDeleteAPIView.as_view()
-
-    # =========== #
-from rest_framework.permissions import AllowAny
-
-# View StudentClassRoom view    
-class StudentClassRoomDetailAPIView(
-    AllowAny,
-    generics.RetrieveAPIView
-    ):
-    queryset = StudentClassRoom.objects.all()
-    serializer_class = StudentClassRoomSerializer    
-    lookup_field = 'uid'
-
-student_classroom_detail_view = StudentClassRoomDetailAPIView.as_view()
-
-# List StudentClassRoom view    
-class StudentClassRoomListCreateAPIView(
-    AllowAny,
-    generics.ListCreateAPIView
-    ):
-    queryset = StudentClassRoom.objects.all()
-    serializer_class = StudentClassRoomSerializer
-
-    def perform_create(self, serializer):
-        print(serializer)
-        serializer.save()
-
-student_classroom_list_create_view = StudentClassRoomListCreateAPIView.as_view()
-
-# Update StudentClassRoom view    
-class StudentClassRoomUpdateAPIView(
-    StaffEditorPermissionMixin,
-    generics.UpdateAPIView
-    ):
-    queryset = StudentClassRoom.objects.all()
-    serializer_class = StudentClassRoomSerializer
-
-    def perform_update(self, serializer):
-        instance = serializer.save()
-
-student_classroom_update_view = StudentClassRoomUpdateAPIView.as_view()
-
-# Delete StudentClassRoom view    
-class StudentClassRoomDeleteAPIView(
-    StaffEditorPermissionMixin,
-    generics.DestroyAPIView
-    ):
-    queryset = StudentClassRoom.objects.all()
-    serializer_class = StudentClassRoomSerializer
-    lookup_field = 'uid'
-
-    def perform_destroy(self, instance):
-        super().perform_destroy(instance)
-
-student_classroom_delete_view = StudentClassRoomDeleteAPIView.as_view()
