@@ -1,6 +1,5 @@
 from django.db import models
 from department.models import *
-from django.utils import timezone 
 
 class ComputerScience(models.Model):
     STATUS = (
