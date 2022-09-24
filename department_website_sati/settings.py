@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'attendance.apps.AttendanceConfig',
+    'django_crontab',
     'faculty.apps.FacultyConfig',
     'student.apps.StudentConfig',
     'department.apps.DepartmentConfig',
